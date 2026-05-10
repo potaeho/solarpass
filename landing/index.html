@@ -693,50 +693,60 @@ footer {
   <p>© 2026 솔라패스 (SolarPass) · GCS 2차 팀 · 본 페이지는 프리토타이핑 검증용입니다</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// 카운터 애니메이션
-(function() {
-  const el = document.getElementById('counter');
-  let count = 0;
-  const target = 27;
-  const step = () => {
-    count = Math.min(count + 1, target);
-    el.textContent = count;
-    if (count < target) setTimeout(step, 40);
-  };
-  setTimeout(step, 800);
-})();
+const { createClient } = supabase;
+const db = createClient(
+  'https://iuvqwfthimenieqxalqj.supabase.co',
+  'sb_publishable_5rcMOgpB_BRrw-R3-6Jlkw_GcSeCL_5'
+);
 
-// 폼 제출 핸들러 (프리토타이핑 — 실제 저장 없이 전환율 측정용)
-function handleSubmit(e) {
+async function loadCount() {
+  try {
+    const { count } = await db.from('signups').select('*', { count: 'exact', head: true });
+    const el = document.getElementById('counter');
+    const target = count || 0;
+    let n = 0;
+    const step = () => {
+      n = Math.min(n + 1, target);
+      el.textContent = n;
+      if (n < target) setTimeout(step, target > 50 ? 20 : 40);
+    };
+    setTimeout(step, 800);
+  } catch(_) {}
+}
+
+async function handleSubmit(e) {
   e.preventDefault();
 
-  const name    = document.getElementById('name').value.trim();
-  const email   = document.getElementById('email').value.trim();
-  const phone   = document.getElementById('phone').value.trim();
-  const pain    = document.getElementById('pain').value.trim();
-  const checks  = [...document.querySelectorAll('input[name="interest"]:checked')]
-                    .map(c => c.value);
+  const name      = document.getElementById('name').value.trim();
+  const email     = document.getElementById('email').value.trim();
+  const phone     = document.getElementById('phone').value.trim();
+  const pain      = document.getElementById('pain').value.trim();
+  const interests = [...document.querySelectorAll('input[name="interest"]:checked')].map(c => c.value);
 
-  // 콘솔에 기록 (실제 운영 시 서버/Google Sheets/Airtable 연동으로 교체)
-  console.log('사전신청 데이터:', { name, email, phone, pain, interests: checks, ts: new Date().toISOString() });
+  const btn = e.target.querySelector('.btn-submit');
+  btn.disabled = true;
+  btn.textContent = '신청 중...';
 
-  // 로컬스토리지에 임시 저장 (검증용)
-  try {
-    const leads = JSON.parse(localStorage.getItem('solar_leads') || '[]');
-    leads.push({ name, email, phone, pain, interests: checks, ts: new Date().toISOString() });
-    localStorage.setItem('solar_leads', JSON.stringify(leads));
-  } catch(_) {}
+  const { error } = await db.from('signups').insert({ name, email, phone, pain, interests });
 
-  // 카운터 증가
+  if (error) {
+    btn.disabled = false;
+    btn.textContent = '무료 사전 신청하기';
+    alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    return;
+  }
+
   const el = document.getElementById('counter');
   el.textContent = parseInt(el.textContent) + 1;
 
-  // 성공 화면 전환
   document.getElementById('signup-form').style.display = 'none';
   document.getElementById('success').style.display = 'block';
   document.getElementById('success').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
+
+loadCount();
 </script>
 </body>
 </html>
