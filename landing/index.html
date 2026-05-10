@@ -191,22 +191,20 @@ document.addEventListener('DOMContentLoaded', async function() {
           'sb_publishable_5rcMOgpB_BRrw-R3-6Jlkw_GcSeCL_5'
         );
         window.__db = db;
-        // load counter
         db.from('signups').select('*',{count:'exact',head:true}).then(function(r){
           var el = document.getElementById('counter');
           if(el && r.count != null) el.textContent = r.count;
         });
-        // override handleSubmit globally
         window.__supabaseHandleSubmit = async function(e){
           if(e) e.preventDefault();
-          var name  = (document.getElementById('name')||{}).value||'';
-          var email = (document.getElementById('email')||{}).value||'';
-          var phone = (document.getElementById('phone')||{}).value||'';
-          var pain  = (document.getElementById('pain')||{}).value||'';
+          var name  = (document.getElementById('name')||{value:''}).value.trim();
+          var email = (document.getElementById('email')||{value:''}).value.trim();
+          var phone = (document.getElementById('phone')||{value:''}).value.trim();
+          var pain  = (document.getElementById('pain')||{value:''}).value.trim();
           var interests = Array.from(document.querySelectorAll('input[name="interest"]:checked')).map(function(c){return c.value;});
           var btn = document.querySelector('.btn-submit');
           if(btn){ btn.disabled=true; btn.textContent='신청 중...'; }
-          var result = await db.from('signups').insert({name:name.trim(),email:email.trim(),phone:phone.trim(),pain:pain.trim(),interests:interests});
+          var result = await db.from('signups').insert({name:name,email:email,phone:phone,pain:pain,interests:interests});
           if(result.error){
             if(btn){ btn.disabled=false; btn.textContent='무료 사전 신청하기'; }
             alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
@@ -219,18 +217,11 @@ document.addEventListener('DOMContentLoaded', async function() {
           if(form) form.style.display='none';
           if(success){ success.style.display='block'; success.scrollIntoView({behavior:'smooth',block:'center'}); }
         };
-        // if original handleSubmit exists and was already bound, override it
-        if(typeof window.handleSubmit === 'function'){
-          window.handleSubmit = window.__supabaseHandleSubmit;
-        }
-        // also listen on form directly as fallback
+        if(typeof window.handleSubmit === 'function') window.handleSubmit = window.__supabaseHandleSubmit;
         var form = document.getElementById('signup-form');
         if(form && !form.__sb){
           form.__sb = true;
-          form.addEventListener('submit', function(e){
-            e.preventDefault();
-            window.__supabaseHandleSubmit(e);
-          });
+          form.addEventListener('submit', function(e){ e.preventDefault(); window.__supabaseHandleSubmit(e); });
         }
       };
       document.head.appendChild(sb);
