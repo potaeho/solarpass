@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>솔라패스 — 그 땅, 태양광 됩니까?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ── 솔라 골드 (태양) ── */
+  --sun:    #F5A623;
+  --sun-lt: #FEF9EC;
+  --sun-dk: #D4851A;
+  /* ── 포레스트 그린 (재생에너지) ── */
+  --navy:   #0F3D22;
+  --navy-m: #1A6B3A;
+  --navy-l: #2D9158;
+  /* ── 페일 그린 (배경) ── */
+  --sky:    #EBF7EF;
+  /* ── 경고 (문제 카드) ── */
+  --red:    #EA580C;
+  --green:  #1A6B3A;
+  --text:   #111827;
+  --muted:  #6B7280;
+  --border: #D1D5DB;
+  --white:  #FFFFFF;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--white);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── HERO ───────────────────────────────────────────────── */
+.hero {
+  background: var(--navy);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 24px 64px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(245,166,35,0.22) 0%, transparent 70%);
+  top: -100px; right: -100px;
+  border-radius: 50%;
+  animation: pulse 6s ease-in-out infinite;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(45,145,88,0.35) 0%, transparent 70%);
+  bottom: -80px; left: -80px;
+  border-radius: 50%;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.7; }
+}
+.hero-eyebrow {
+  display: inline-block;
+  background: rgba(245,166,35,0.15);
+  border: 1px solid rgba(245,166,35,0.45);
+  color: var(--sun);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.6s ease both;
+}
+.hero-headline {
+  font-family: 'Noto Serif KR', serif;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.25;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.7s ease both;
+}
+.hero-headline .accent {
+  color: var(--sun);
+  position: relative;
+}
+.hero-headline .accent::after {
+  content: '';
+  position: absolute;
+  bottom: 2px; left: 0; right: 0;
+  height: 3px;
+  background: var(--sun);
+  opacity: 0.5;
+  border-radius: 2px;
+}
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: rgba(255,255,255,0.75);
+  line-height: 1.7;
+  max-width: 580px;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.8s ease both;
+}
+.hero-sub strong { color: var(--white); font-weight: 700; }
+
+/* pain stats */
+.pain-strip {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 56px;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.9s ease both;
+}
+.pain-item {
+  text-align: center;
+}
+.pain-num {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--sun);
+  line-height: 1;
+}
+.pain-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.hero-cta {
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 1s ease both;
+}
+.btn-primary {
+  display: inline-block;
+  background: var(--sun);
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 16px 40px;
+  border-radius: 4px;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 24px rgba(245,166,35,0.40);
+  cursor: pointer;
+  border: none;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(245,166,35,0.55);
+}
+.hero-note {
+  margin-top: 14px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── PROBLEM ────────────────────────────────────────────── */
+.section { padding: 80px 24px; }
+.container { max-width: 900px; margin: 0 auto; }
+.section-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.3;
+  margin-bottom: 48px;
+}
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.problem-card {
+  background: var(--sky);
+  border-left: 4px solid var(--red);
+  padding: 24px;
+  border-radius: 0 8px 8px 0;
+}
+.problem-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.problem-card p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ── HOW IT WORKS ──────────────────────────────────────── */
+.how-section { background: var(--navy); padding: 80px 24px; }
+.how-section .section-title { color: var(--white); }
+.how-section .section-tag { color: var(--sun); }
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.step {
+  background: rgba(15,61,34,0.65);
+  padding: 32px 24px;
+  position: relative;
+}
+.step-num {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--sun);
+  opacity: 0.4;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.step h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.step p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.65; }
+
+/* ── VALUE ─────────────────────────────────────────────── */
+.value-section { background: var(--sun-lt); padding: 80px 24px; }
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+.value-card {
+  background: var(--white);
+  border: 1px solid rgba(26,107,58,0.2);
+  border-radius: 12px;
+  padding: 28px 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.value-icon { font-size: 28px; margin-bottom: 14px; }
+.value-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.value-card p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+/* ── FORM ───────────────────────────────────────────────── */
+.form-section {
+  background: var(--white);
+  padding: 80px 24px;
+  border-top: 1px solid var(--border);
+}
+.form-wrap {
+  max-width: 560px;
+  margin: 0 auto;
+}
+.form-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.form-header .section-title { margin-bottom: 12px; }
+.form-header p {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.form-header p strong { color: var(--navy); }
+
+.form-group {
+  margin-bottom: 20px;
+}
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 7px;
+  letter-spacing: 0.01em;
+}
+.form-label .req { color: var(--sun); margin-left: 3px; }
+.form-input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-size: 15px;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text);
+  background: var(--white);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+.form-input:focus {
+  border-color: var(--navy-l);
+  box-shadow: 0 0 0 3px rgba(45,145,88,0.15);
+}
+.form-input::placeholder { color: #B0B7C3; }
+
+.form-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 28px 0;
+}
+
+.interest-group {
+  margin-bottom: 24px;
+}
+.interest-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 12px;
+  display: block;
+}
+.interest-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.interest-opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  font-size: 13px;
+  color: var(--text);
+  user-select: none;
+}
+.interest-opt input[type="checkbox"] {
+  width: 16px; height: 16px;
+  accent-color: var(--sun);
+  flex-shrink: 0;
+}
+.interest-opt:has(input:checked) {
+  border-color: var(--sun);
+  background: var(--sun-lt);
+}
+
+.textarea-input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text);
+  resize: vertical;
+  min-height: 90px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  line-height: 1.6;
+}
+.textarea-input:focus {
+  border-color: var(--navy-l);
+  box-shadow: 0 0 0 3px rgba(45,145,88,0.15);
+}
+
+.submit-wrap { text-align: center; margin-top: 32px; }
+.btn-submit {
+  width: 100%;
+  padding: 17px;
+  background: var(--navy);
+  color: var(--white);
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: background 0.15s, transform 0.15s;
+}
+.btn-submit:hover {
+  background: var(--navy-m);
+  transform: translateY(-1px);
+}
+.form-privacy {
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ── SUCCESS ──────────────────────────────────────────── */
+.success-box {
+  display: none;
+  text-align: center;
+  padding: 48px 24px;
+  background: var(--sky);
+  border-radius: 12px;
+  border: 1.5px solid rgba(26,107,58,0.3);
+}
+.success-box .icon { font-size: 48px; margin-bottom: 16px; }
+.success-box h2 {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+.success-box p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+/* ── FOOTER ────────────────────────────────────────────── */
+footer {
+  background: var(--navy);
+  padding: 32px 24px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+}
+
+/* ── COUNTER ───────────────────────────────────────────── */
+.counter-bar {
+  background: rgba(26,107,58,0.07);
+  border: 1px solid rgba(26,107,58,0.2);
+  border-radius: 8px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 36px;
+  font-size: 13px;
+  color: var(--navy);
+}
+.counter-num {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--sun);
+}
+
+/* ── RESPONSIVE ────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .pain-strip { gap: 20px; }
+  .interest-options { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ═════════════════════════════════════════════ -->
+<section class="hero" id="top">
+  <div class="hero-eyebrow">🌱 전문 발전 사업자 전용 · 사전 신청 모집 중</div>
+  <h1 class="hero-headline">
+    부지 발굴,<br><span class="accent">수작업은 이제</span> 그만
+  </h1>
+  <p class="hero-sub">
+    계통 연계 가능 부지 탐색 → 지자체 조례 확인 → 토지주 컨택 → 계약<br>
+    <strong>맞는 순서인데, 전부 수작업이라 너무 오래 걸리지 않으신가요?</strong><br>
+    전문 발전 사업자를 위한 부지 자동 추천 엔진입니다.
+  </p>
+  <div class="pain-strip">
+    <div class="pain-item">
+      <div class="pain-num">10시간+</div>
+      <div class="pain-label">부지 1개 탐색에<br>드는 수작업 시간</div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-num">10GW+</div>
+      <div class="pain-label">계통연계 누적<br>대기 물량</div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-num">229개</div>
+      <div class="pain-label">각기 다른 기준의<br>지자체 조례</div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-num">2026.08</div>
+      <div class="pain-label">이격거리 규제<br>법제화 시행</div>
+    </div>
+  </div>
+  <div class="hero-cta">
+    <button class="btn-primary" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})">
+      무료 사전 신청하기 →
+    </button>
+    <p class="hero-note">현재 베타 테스터 모집 중 · 출시 알림 우선 발송</p>
+  </div>
+</section>
+
+<!-- ══ PROBLEM ══════════════════════════════════════════ -->
+<section class="section" style="background:#fff;">
+  <div class="container">
+    <div class="section-tag">이런 경험, 있으셨죠?</div>
+    <h2 class="section-title">부지 탐색,<br>복잡하고 쉽지 않으셨죠?</h2>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <h3>순서는 알고 계셨는데도, 전부 수작업이셨죠?</h3>
+        <p>계통 연계 가능 부지 탐색 → 지자체 조례 확인 → 토지주 컨택 → 계약. 순서는 이미 알고 계셨죠. 그런데 이 4단계를 부지 하나하나마다 직접 손으로 하셨다 보면, 수십 개를 동시에 살펴보는 건 사실상 불가능하셨을 겁니다.</p>
+      </div>
+      <div class="problem-card">
+        <h3>계통·조례·이격거리 정보가 모두 따로따로셨죠?</h3>
+        <p>한전 계통, 229개 지자체 조례, 국토부 이격거리 기준이 각각 다른 곳에 나뉘어 있어 하나씩 직접 확인하셨죠. 통합해서 판단할 창구가 없어 기회를 놓친 경험, 있으셨을 겁니다.</p>
+      </div>
+      <div class="problem-card">
+        <h3>같은 부지인데 인허가 결과가 달라 당황하셨죠?</h3>
+        <p>담당 공무원·지자체 재량에 따라 동일 조건 부지도 결과가 달라집니다. 경험이 쌓여도 예측하기 어려운 구조라 일정이 흔들린 적 있으셨을 겁니다.</p>
+      </div>
+      <div class="problem-card">
+        <h3>여러 프로젝트, 카카오톡으로 관리하고 계셨죠?</h3>
+        <p>여러 부지를 병렬로 진행하시다 보면 인허가 현황을 카카오톡 단체방으로 파악하셨을 겁니다. 어느 부지가 어느 단계인지 한눈에 보기 어려우셨죠.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HOW IT WORKS ══════════════════════════════════════ -->
+<section class="how-section">
+  <div class="container">
+    <div class="section-tag">서비스 흐름</div>
+    <h2 class="section-title" style="color:#fff;">이렇게 달라집니다</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>지역·용량 조건 입력</h3>
+        <p>원하는 지역과 발전 규모를 입력하시면 계통 연계 가능 부지 후보를 자동으로 추출해 드립니다. 한전에 전화하지 않아도 즉시 확인하세요.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>부지별 사업성 비교 리포트</h3>
+        <p>계통 용량·지자체 조례·이격거리·인허가 성공률 데이터를 한 화면에서 비교하세요. 어느 부지부터 진행할지 데이터로 결정하실 수 있습니다.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>인허가 대행 입찰 연결</h3>
+        <p>인허가 전문업체와 시공업체를 분리해 입찰 방식으로 연결해 드립니다. EPC가 단가를 묶는 구조를 끊어 비용을 최소화하세요.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>복수 프로젝트 현황 대시보드</h3>
+        <p>동시에 진행 중인 여러 부지의 인허가 단계·반려 사유·보완 요청을 한 화면에서 관리하세요. 카카오톡 단체방에서 벗어나실 수 있습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ VALUE ═════════════════════════════════════════════ -->
+<section class="value-section">
+  <div class="container">
+    <div class="section-tag">왜 솔라패스인가</div>
+    <h2 class="section-title">부지 발굴 속도를<br>10배 높입니다</h2>
+    <div class="value-grid">
+      <div class="value-card">
+        <div class="value-icon">🔍</div>
+        <h3>계통 가능 부지 자동 추출</h3>
+        <p>지역·용량 조건만 입력하시면 계통 연계 가능한 후보 부지 리스트를 자동으로 생성해 드립니다. 수작업 탐색 시간을 90% 단축하세요.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">📊</div>
+        <h3>229개 지자체 조례 통합</h3>
+        <p>조례·이격거리·계통 용량·위험도를 한 화면에서 비교하세요. 지자체마다 따로 확인하러 다니는 시간을 없애 드립니다.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🏆</div>
+        <h3>인허가 성공률 데이터</h3>
+        <p>지자체별 재량 패턴·반려 사유 이력 데이터로 인허가 성공 가능성을 미리 확인하세요. 경험이 아니라 데이터로 판단하실 수 있습니다.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">📋</div>
+        <h3>복수 프로젝트 통합 관리</h3>
+        <p>동시 진행 중인 여러 부지의 인허가 현황을 한 대시보드에서 확인하세요. 팀 전체가 같은 정보를 실시간으로 공유할 수 있습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FORM ═══════════════════════════════════════════════ -->
+<section class="form-section" id="form">
+  <div class="form-wrap">
+    <div class="form-header">
+      <div class="section-tag" style="text-align:center">사전 신청</div>
+      <h2 class="section-title">베타 출시 알림,<br>먼저 받아보세요</h2>
+      <div class="counter-bar">
+        <span>현재까지</span>
+        <span class="counter-num" id="counter">27</span>
+        <span>명이 사전 신청했습니다</span>
+      </div>
+      <p>정식 출시 전 <strong>무료 베타 이용권</strong>을 신청자 우선으로 제공합니다.<br>
+      계통 가능 부지 탐색 리포트 1회 + 인허가 성공률 데이터 무료 제공 예정.</p>
+    </div>
+
+    <form id="signup-form" onsubmit="handleSubmit(event)">
+      <div class="form-group">
+        <label class="form-label" for="name">이름 <span class="req">*</span></label>
+        <input class="form-input" type="text" id="name" placeholder="홍길동" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="email">이메일 <span class="req">*</span></label>
+        <input class="form-input" type="email" id="email" placeholder="name@example.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="phone">전화번호 <span class="req">*</span></label>
+        <input class="form-input" type="tel" id="phone" placeholder="010-0000-0000" required>
+      </div>
+
+      <hr class="form-divider">
+
+      <div class="interest-group">
+        <span class="interest-label">현재 상황을 선택해 주세요 (복수 선택 가능)</span>
+        <div class="interest-options">
+          <label class="interest-opt">
+            <input type="checkbox" name="interest" value="site_searching">
+            🔍 계통 가능 부지 탐색 중
+          </label>
+          <label class="interest-opt">
+            <input type="checkbox" name="interest" value="multi_project">
+            📦 복수 프로젝트 동시 진행 중
+          </label>
+          <label class="interest-opt">
+            <input type="checkbox" name="interest" value="nationwide">
+            🗺️ 전국 단위 사업 확장 계획
+          </label>
+          <label class="interest-opt">
+            <input type="checkbox" name="interest" value="direct">
+            🏗️ EPC·브로커 없이 직접 부지 확보
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="pain">현재 부지 탐색·인허가에서 가장 불편한 부분을 적어주세요</label>
+        <textarea class="textarea-input" id="pain"
+          placeholder="예: 전남 지역 500kW 부지 5개를 동시 탐색 중인데, 계통 가능 여부와 지자체 조례를 일일이 확인하는 데 너무 오래 걸립니다..."></textarea>
+      </div>
+
+      <div class="submit-wrap">
+        <button class="btn-submit" type="submit">무료 사전 신청하기</button>
+      </div>
+      <p class="form-privacy">
+        수집된 정보는 서비스 출시 알림 및 베타 테스트 안내 목적으로만 사용되며,<br>
+        제3자에게 제공되지 않습니다.
+      </p>
+    </form>
+
+    <div class="success-box" id="success">
+      <div class="icon">✅</div>
+      <h2>사전 신청 완료!</h2>
+      <p>신청해 주셔서 감사합니다.<br>
+      베타 출시 시 입력하신 이메일로 가장 먼저 연락드리겠습니다.<br><br>
+      <strong>계통 가능 부지 탐색 리포트 1회 + 인허가 성공률 데이터</strong>를 우선 제공해 드립니다.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 솔라패스 (SolarPass) · GCS 2차 팀 · 본 페이지는 프리토타이핑 검증용입니다</p>
+</footer>
+
+<script>
+// 카운터 애니메이션
+(function() {
+  const el = document.getElementById('counter');
+  let count = 0;
+  const target = 27;
+  const step = () => {
+    count = Math.min(count + 1, target);
+    el.textContent = count;
+    if (count < target) setTimeout(step, 40);
+  };
+  setTimeout(step, 800);
+})();
+
+// 폼 제출 핸들러 (프리토타이핑 — 실제 저장 없이 전환율 측정용)
+function handleSubmit(e) {
+  e.preventDefault();
+
+  const name    = document.getElementById('name').value.trim();
+  const email   = document.getElementById('email').value.trim();
+  const phone   = document.getElementById('phone').value.trim();
+  const pain    = document.getElementById('pain').value.trim();
+  const checks  = [...document.querySelectorAll('input[name="interest"]:checked')]
+                    .map(c => c.value);
+
+  // 콘솔에 기록 (실제 운영 시 서버/Google Sheets/Airtable 연동으로 교체)
+  console.log('사전신청 데이터:', { name, email, phone, pain, interests: checks, ts: new Date().toISOString() });
+
+  // 로컬스토리지에 임시 저장 (검증용)
+  try {
+    const leads = JSON.parse(localStorage.getItem('solar_leads') || '[]');
+    leads.push({ name, email, phone, pain, interests: checks, ts: new Date().toISOString() });
+    localStorage.setItem('solar_leads', JSON.stringify(leads));
+  } catch(_) {}
+
+  // 카운터 증가
+  const el = document.getElementById('counter');
+  el.textContent = parseInt(el.textContent) + 1;
+
+  // 성공 화면 전환
+  document.getElementById('signup-form').style.display = 'none';
+  document.getElementById('success').style.display = 'block';
+  document.getElementById('success').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html>
