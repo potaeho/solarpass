@@ -269,7 +269,7 @@ export default function MapHome() {
 // ── 스타일 ────────────────────────────────────────────────────────────────────
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  legend:    { position: 'absolute', top: 80, left: 16 },
+  legend:    { position: 'absolute', bottom: 120, right: 16 },
 
   // ── 검색 ──
   searchContainer: {
