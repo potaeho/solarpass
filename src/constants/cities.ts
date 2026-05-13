@@ -225,18 +225,132 @@ const JEJU_CITIES: Region[] = [
   ]),
 ];
 
-// ─── 강원도 ────────────────────────────────────────────────────────────────
+// ─── 강원도 (18개 시·군) ───────────────────────────────────────────────────
 const GANGWON_CITIES: Region[] = [
-  makeCity('gangwon-gangneung', '강원특별자치도 강릉시', '강릉시', '강원도', 37.751, 128.876, 310000, [
-    { id: 'land_use', status: 'pass', title: '토지이용계획', description: '임야 전용 가능' },
-    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '여유 충분', gridCapacity: { totalMW: 600, usedMW: 310, availableMW: 290, waitingQueue: 4 } },
+  // ── 시 (7개) ──
+  makeCity('gangwon-chuncheon', '강원특별자치도 춘천시', '춘천시', '강원도', 37.882, 127.730, 250000, [
+    { id: 'land_use', status: 'pass', title: '토지이용계획', description: '관리지역·임야 활용 가능' },
+    { id: 'grid_capacity', status: 'warning', title: '한전 계통망 용량', description: '계통 대기 발생 중', gridCapacity: { totalMW: 800, usedMW: 620, availableMW: 180, waitingQueue: 28 } },
+    { id: 'setback_distance', status: 'pass', title: '이격거리', description: '이격 기준 충족' },
+    { id: 'national_law', status: 'pass', title: '공통법규', description: '허가 요건 충족' },
+    { id: 'local_ordinance', status: 'warning', title: '지자체 조례', description: '경관심의 필요 구역 있음' },
+  ]),
+  makeCity('gangwon-wonju', '강원특별자치도 원주시', '원주시', '강원도', 37.342, 127.921, 280000, [
+    { id: 'land_use', status: 'pass', title: '토지이용계획', description: '농지·임야 전용 가능' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '여유 충분', gridCapacity: { totalMW: 500, usedMW: 260, availableMW: 240, waitingQueue: 3 } },
     { id: 'setback_distance', status: 'pass', title: '이격거리', description: '충족' },
     { id: 'national_law', status: 'pass', title: '공통법규', description: '허가 요건 충족' },
     { id: 'local_ordinance', status: 'pass', title: '지자체 조례', description: '별도 제한 없음' },
   ]),
-  makeCity('gangwon-wonju', '강원특별자치도 원주시', '원주시', '강원도', 37.342, 127.921, 280000, [
+  makeCity('gangwon-gangneung', '강원특별자치도 강릉시', '강릉시', '강원도', 37.751, 128.876, 310000, [
+    { id: 'land_use', status: 'pass', title: '토지이용계획', description: '동해안 인근 임야 전용 가능' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '동해안 선로 여유 충분', gridCapacity: { totalMW: 600, usedMW: 310, availableMW: 290, waitingQueue: 4 } },
+    { id: 'setback_distance', status: 'pass', title: '이격거리', description: '충족' },
+    { id: 'national_law', status: 'pass', title: '공통법규', description: '허가 요건 충족' },
+    { id: 'local_ordinance', status: 'pass', title: '지자체 조례', description: '별도 제한 없음' },
+  ]),
+  makeCity('gangwon-donghae', '강원특별자치도 동해시', '동해시', '강원도', 37.524, 129.114, 290000, [
+    { id: 'land_use', status: 'pass', title: '토지이용계획', description: '임야·농지 전용 가능' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '동해안 선로 여유', gridCapacity: { totalMW: 450, usedMW: 260, availableMW: 190, waitingQueue: 8 } },
+    { id: 'setback_distance', status: 'pass', title: '이격거리', description: '충족' },
+    { id: 'national_law', status: 'pass', title: '공통법규', description: '허가 요건 충족' },
+    { id: 'local_ordinance', status: 'pass', title: '지자체 조례', description: '별도 제한 없음' },
+  ]),
+  makeCity('gangwon-taebaek', '강원특별자치도 태백시', '태백시', '강원도', 37.164, 128.985, 220000, [
+    { id: 'land_use', status: 'warning', title: '토지이용계획', description: '고지대·임야 비율 높아 개발행위 까다로움' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '여유 있음', gridCapacity: { totalMW: 350, usedMW: 180, availableMW: 170, waitingQueue: 5 } },
+    { id: 'setback_distance', status: 'pass', title: '이격거리', description: '충족' },
+    { id: 'national_law', status: 'pass', title: '공통법규', description: '허가 요건 충족' },
+    { id: 'local_ordinance', status: 'pass', title: '지자체 조례', description: '별도 제한 없음' },
+  ]),
+  makeCity('gangwon-sokcho', '강원특별자치도 속초시', '속초시', '강원도', 38.208, 128.592, 270000, [
+    { id: 'land_use', status: 'warning', title: '토지이용계획', description: '설악산 국립공원 인근 개발 제한' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '해안 선로 여유', gridCapacity: { totalMW: 320, usedMW: 180, availableMW: 140, waitingQueue: 10 } },
+    { id: 'setback_distance', status: 'pass', title: '이격거리', description: '충족' },
+    { id: 'national_law', status: 'warning', title: '공통법규', description: '국립공원 인접 구역 개발 제한 적용' },
+    { id: 'local_ordinance', status: 'warning', title: '지자체 조례', description: '관광·경관 보호 조례 강화' },
+  ]),
+  makeCity('gangwon-samcheok', '강원특별자치도 삼척시', '삼척시', '강원도', 37.450, 129.165, 300000, [
+    { id: 'land_use', status: 'pass', title: '토지이용계획', description: '해안·임야 전용 가능' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '동해안 선로 여유', gridCapacity: { totalMW: 420, usedMW: 250, availableMW: 170, waitingQueue: 7 } },
+    { id: 'setback_distance', status: 'pass', title: '이격거리', description: '충족' },
+    { id: 'national_law', status: 'pass', title: '공통법규', description: '허가 요건 충족' },
+    { id: 'local_ordinance', status: 'pass', title: '지자체 조례', description: '별도 제한 없음' },
+  ]),
+  // ── 군 (11개) ──
+  makeCity('gangwon-hongcheon', '강원특별자치도 홍천군', '홍천군', '강원도', 37.697, 127.889, 240000, [
     { id: 'land_use', status: 'pass', title: '토지이용계획', description: '임야 전용 가능' },
-    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '여유 충분', gridCapacity: { totalMW: 500, usedMW: 260, availableMW: 240, waitingQueue: 3 } },
+    { id: 'grid_capacity', status: 'warning', title: '한전 계통망 용량', description: '용량 여유 제한적', gridCapacity: { totalMW: 320, usedMW: 245, availableMW: 75, waitingQueue: 14 } },
+    { id: 'setback_distance', status: 'pass', title: '이격거리', description: '충족' },
+    { id: 'national_law', status: 'pass', title: '공통법규', description: '허가 요건 충족' },
+    { id: 'local_ordinance', status: 'pass', title: '지자체 조례', description: '별도 제한 없음' },
+  ]),
+  makeCity('gangwon-hoengseong', '강원특별자치도 횡성군', '횡성군', '강원도', 37.492, 127.984, 230000, [
+    { id: 'land_use', status: 'pass', title: '토지이용계획', description: '농지·임야 전용 가능' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '여유 충분', gridCapacity: { totalMW: 280, usedMW: 155, availableMW: 125, waitingQueue: 5 } },
+    { id: 'setback_distance', status: 'pass', title: '이격거리', description: '충족' },
+    { id: 'national_law', status: 'pass', title: '공통법규', description: '허가 요건 충족' },
+    { id: 'local_ordinance', status: 'pass', title: '지자체 조례', description: '별도 제한 없음' },
+  ]),
+  makeCity('gangwon-yeongwol', '강원특별자치도 영월군', '영월군', '강원도', 37.183, 128.462, 260000, [
+    { id: 'land_use', status: 'pass', title: '토지이용계획', description: '임야 전용 가능' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '여유 충분', gridCapacity: { totalMW: 300, usedMW: 165, availableMW: 135, waitingQueue: 6 } },
+    { id: 'setback_distance', status: 'pass', title: '이격거리', description: '충족' },
+    { id: 'national_law', status: 'pass', title: '공통법규', description: '허가 요건 충족' },
+    { id: 'local_ordinance', status: 'warning', title: '지자체 조례', description: '석탄산업 전환지역 특별 심의 대상' },
+  ]),
+  makeCity('gangwon-pyeongchang', '강원특별자치도 평창군', '평창군', '강원도', 37.370, 128.488, 210000, [
+    { id: 'land_use', status: 'warning', title: '토지이용계획', description: '오대산 국립공원 인근 개발 제한' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '여유 있음', gridCapacity: { totalMW: 280, usedMW: 155, availableMW: 125, waitingQueue: 5 } },
+    { id: 'setback_distance', status: 'pass', title: '이격거리', description: '충족' },
+    { id: 'national_law', status: 'warning', title: '공통법규', description: '오대산 국립공원 인접 구역 개발 제한' },
+    { id: 'local_ordinance', status: 'warning', title: '지자체 조례', description: '동계올림픽 유산지구 경관 조례' },
+  ]),
+  makeCity('gangwon-jeongseon', '강원특별자치도 정선군', '정선군', '강원도', 37.380, 128.661, 220000, [
+    { id: 'land_use', status: 'warning', title: '토지이용계획', description: '산악 지형·임야 비율 높아 개발 까다로움' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '여유 충분', gridCapacity: { totalMW: 240, usedMW: 130, availableMW: 110, waitingQueue: 4 } },
+    { id: 'setback_distance', status: 'pass', title: '이격거리', description: '충족' },
+    { id: 'national_law', status: 'pass', title: '공통법규', description: '허가 요건 충족' },
+    { id: 'local_ordinance', status: 'warning', title: '지자체 조례', description: '폐광지역 특별 관리 구역 심의' },
+  ]),
+  makeCity('gangwon-cheorwon', '강원특별자치도 철원군', '철원군', '강원도', 38.147, 127.314, 200000, [
+    { id: 'land_use', status: 'pass', title: '토지이용계획', description: '농지·관리지역 전용 가능' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '여유 있음', gridCapacity: { totalMW: 280, usedMW: 155, availableMW: 125, waitingQueue: 7 } },
+    { id: 'setback_distance', status: 'warning', title: '이격거리', description: '군사시설 이격거리 추가 검토 필요' },
+    { id: 'national_law', status: 'warning', title: '공통법규', description: '군사시설보호구역 내 개발행위 허가 제한' },
+    { id: 'local_ordinance', status: 'pass', title: '지자체 조례', description: '별도 제한 없음' },
+  ]),
+  makeCity('gangwon-hwacheon', '강원특별자치도 화천군', '화천군', '강원도', 38.106, 127.708, 190000, [
+    { id: 'land_use', status: 'pass', title: '토지이용계획', description: '임야·관리지역 활용 가능' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '여유 충분', gridCapacity: { totalMW: 200, usedMW: 105, availableMW: 95, waitingQueue: 3 } },
+    { id: 'setback_distance', status: 'warning', title: '이격거리', description: '군사시설 이격거리 추가 검토 필요' },
+    { id: 'national_law', status: 'warning', title: '공통법규', description: '군사시설보호구역 범위 넓어 개발 제한' },
+    { id: 'local_ordinance', status: 'pass', title: '지자체 조례', description: '별도 제한 없음' },
+  ]),
+  makeCity('gangwon-yanggu', '강원특별자치도 양구군', '양구군', '강원도', 38.109, 127.989, 185000, [
+    { id: 'land_use', status: 'pass', title: '토지이용계획', description: '임야 전용 가능' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '여유 충분', gridCapacity: { totalMW: 180, usedMW: 90, availableMW: 90, waitingQueue: 2 } },
+    { id: 'setback_distance', status: 'warning', title: '이격거리', description: '군사시설 이격거리 적용 구역 다수' },
+    { id: 'national_law', status: 'warning', title: '공통법규', description: '군사시설보호구역 비율 높아 입지 제한' },
+    { id: 'local_ordinance', status: 'pass', title: '지자체 조례', description: '별도 제한 없음' },
+  ]),
+  makeCity('gangwon-inje', '강원특별자치도 인제군', '인제군', '강원도', 38.069, 128.171, 195000, [
+    { id: 'land_use', status: 'pass', title: '토지이용계획', description: '임야 전용 가능 구역 있음' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '여유 충분', gridCapacity: { totalMW: 210, usedMW: 110, availableMW: 100, waitingQueue: 4 } },
+    { id: 'setback_distance', status: 'pass', title: '이격거리', description: '충족' },
+    { id: 'national_law', status: 'warning', title: '공통법규', description: '설악산 국립공원 인접 구역 개발 제한' },
+    { id: 'local_ordinance', status: 'pass', title: '지자체 조례', description: '별도 제한 없음' },
+  ]),
+  makeCity('gangwon-goseong', '강원특별자치도 고성군', '고성군', '강원도', 38.380, 128.468, 260000, [
+    { id: 'land_use', status: 'pass', title: '토지이용계획', description: '동해안 인근 개발 가능' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '해안 선로 여유', gridCapacity: { totalMW: 240, usedMW: 140, availableMW: 100, waitingQueue: 6 } },
+    { id: 'setback_distance', status: 'pass', title: '이격거리', description: '충족' },
+    { id: 'national_law', status: 'warning', title: '공통법규', description: 'DMZ 인근 접경지역 개발 사전 협의 필요' },
+    { id: 'local_ordinance', status: 'pass', title: '지자체 조례', description: '별도 제한 없음' },
+  ]),
+  makeCity('gangwon-yangyang', '강원특별자치도 양양군', '양양군', '강원도', 38.075, 128.619, 280000, [
+    { id: 'land_use', status: 'pass', title: '토지이용계획', description: '동해안 임야·농지 전용 가능' },
+    { id: 'grid_capacity', status: 'pass', title: '한전 계통망 용량', description: '여유 충분', gridCapacity: { totalMW: 290, usedMW: 160, availableMW: 130, waitingQueue: 7 } },
     { id: 'setback_distance', status: 'pass', title: '이격거리', description: '충족' },
     { id: 'national_law', status: 'pass', title: '공통법규', description: '허가 요건 충족' },
     { id: 'local_ordinance', status: 'pass', title: '지자체 조례', description: '별도 제한 없음' },
