@@ -1,4 +1,4 @@
-/** 카카오 주소 검색 API — 지번·도로명 주소 검색 */
+/** Vworld 주소 검색 API — 지번·도로명 주소 검색 (공공데이터 무료) */
 
 export interface AddressResult {
   id: string;
@@ -11,7 +11,7 @@ export interface AddressResult {
   longitude: number;
 }
 
-// 카카오가 반환하는 도 이름 → 우리 DB 키 정규화
+// 도 이름 정규화 (Vworld 반환값 → 우리 DB 키)
 const PROVINCE_NORMALIZE: Record<string, string> = {
   '전라북도':        '전라북도',
   '전북특별자치도':  '전라북도',
@@ -25,38 +25,67 @@ export function normalizeProvince(raw: string): string {
   return PROVINCE_NORMALIZE[raw] ?? raw;
 }
 
+/** 주소 문자열에서 도·시/군 파싱 ("전라남도 나주시 금천면 …" → { province, city, district }) */
+function parseAddressParts(addr: string) {
+  const parts = addr.split(' ').filter(Boolean);
+  // 첫 번째 토큰: 도/특별시/광역시
+  const province = parts[0] ?? '';
+  // 두 번째 토큰: 시/군/구
+  const city = parts[1] ?? '';
+  // 세 번째 토큰: 읍/면/동
+  const district = parts[2] ?? '';
+  return { province: normalizeProvince(province), city, district };
+}
+
 export async function searchAddress(query: string): Promise<AddressResult[]> {
-  const key = process.env.EXPO_PUBLIC_KAKAO_REST_KEY;
+  const key = process.env.EXPO_PUBLIC_LAND_USE_API_KEY; // 기존 Vworld 키 재사용
   if (!key || query.trim().length < 2) return [];
 
   try {
-    const res = await fetch(
-      `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(query.trim())}&size=10`,
-      { headers: { Authorization: `KakaoAK ${key}` } },
-    );
+    const params = new URLSearchParams({
+      service:     'search',
+      request:     'search',
+      version:     '2.0',
+      crs:         'EPSG:4326',
+      size:        '10',
+      page:        '1',
+      query:       query.trim(),
+      type:        'address',
+      format:      'json',
+      errorformat: 'json',
+      key,
+    });
+
+    const res = await fetch(`https://api.vworld.kr/req/search?${params}`);
     if (!res.ok) return [];
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { documents = [] } = (await res.json()) as { documents: any[] };
+    const json = (await res.json()) as Record<string, any>;
+    const status = json?.response?.status;
+    if (status !== 'OK') return [];
 
-    return documents.map((d, i) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const a = (d.address ?? d.road_address) as Record<string, any> | null;
-      const r2 = a?.region_2depth_name ?? '';
-      const r3 = a?.region_3depth_name ?? '';
-      const main = d.address?.main_address_no ?? '';
-      const sub  = d.address?.sub_address_no  ?? '';
-      const jibun = main ? `${main}${sub ? `-${sub}` : ''}번지` : '';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const items: any[] = json?.response?.result?.items ?? [];
+
+    return items.map((item, i) => {
+      // 지번 주소 우선, 없으면 도로명
+      const fullAddress: string = item.address?.parcel ?? item.address?.road ?? item.title ?? '';
+      const { province, city, district } = parseAddressParts(fullAddress);
+      const lat = parseFloat(item.point?.y ?? '0');
+      const lon = parseFloat(item.point?.x ?? '0');
+
+      // 표시명: "나주시 금천면 123번지" 형태로 압축
+      const titleShort = fullAddress.split(' ').slice(1).join(' '); // 도 이름 제거
 
       return {
-        id:          `addr_${i}_${d.x}_${d.y}`,
-        displayName: r3 ? `${r2} ${r3}${jibun ? ' ' + jibun : ''}` : d.address_name,
-        fullAddress: d.address_name,
-        province:    normalizeProvince(a?.region_1depth_name ?? ''),
-        city:        r2,
-        district:    r3,
-        latitude:    parseFloat(d.y),
-        longitude:   parseFloat(d.x),
+        id:          `vw_${i}_${item.point?.x}_${item.point?.y}`,
+        displayName: titleShort || fullAddress,
+        fullAddress,
+        province,
+        city,
+        district,
+        latitude:  lat,
+        longitude: lon,
       };
     });
   } catch {
