@@ -151,7 +151,7 @@ export default function OfficeTab() {
               onPress={() => setSelectedProvince(prov)}
               activeOpacity={0.8}
             >
-              <Text style={[styles.chipText, active && styles.chipTextActive]} numberOfLines={1}>
+              <Text style={[styles.chipText, active && styles.chipTextActive]}>
                 {label}
               </Text>
               <View style={[styles.chipBadge, active && styles.chipBadgeActive]}>
@@ -209,16 +209,16 @@ const styles = StyleSheet.create({
   searchInput: { flex: 1, fontSize: 14, color: Colors.textPrimary, padding: 0 },
   clearBtn:    { padding: 2 },
 
-  filterScroll: { flexGrow: 0, marginBottom: 4 },
-  filterList:   { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 4, gap: 8 },
+  filterScroll: { flexGrow: 0, flexShrink: 0, marginBottom: 4 },
+  filterList:   { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 6, gap: 8 },
   chip: {
-    flexDirection: 'row', alignItems: 'center', flexShrink: 0,
+    flexDirection: 'row', alignItems: 'center',
     paddingHorizontal: 12, paddingVertical: 8,
     borderRadius: 20, borderWidth: 1.5, borderColor: Colors.border,
     backgroundColor: Colors.surface, gap: 6,
   },
   chipActive:      { borderColor: Colors.primary, backgroundColor: Colors.primary + '15' },
-  chipText:        { fontSize: 13, fontWeight: '600', color: Colors.textSecondary, flexShrink: 0 },
+  chipText:        { fontSize: 13, fontWeight: '600', color: Colors.textSecondary },
   chipTextActive:  { color: Colors.primary },
   chipBadge:       { backgroundColor: Colors.border, borderRadius: 8, paddingHorizontal: 6, paddingVertical: 2, flexShrink: 0 },
   chipBadgeActive: { backgroundColor: Colors.primary },
