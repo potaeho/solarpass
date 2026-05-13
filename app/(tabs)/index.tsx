@@ -1,8 +1,9 @@
 import { useRef, useState, useMemo, useCallback } from 'react';
 import {
-  FlatList, Keyboard, SafeAreaView, StyleSheet,
+  FlatList, Keyboard, StyleSheet,
   Text, TextInput, TouchableOpacity, View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import type BottomSheet from '@gorhom/bottom-sheet';
 import { useRouter } from 'expo-router';
@@ -85,6 +86,7 @@ function SearchResultItem({
 // ── 메인 ─────────────────────────────────────────────────────────────────────
 export default function MapHome() {
   const router          = useRouter();
+  const insets          = useSafeAreaInsets();
   const mapRef          = useRef<MapView>(null);
   const bottomSheetRef  = useRef<BottomSheet>(null);
   const inputRef        = useRef<TextInput>(null);
@@ -159,7 +161,7 @@ export default function MapHome() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {/* 지도 */}
       <MapView
         ref={mapRef}
@@ -196,13 +198,13 @@ export default function MapHome() {
 
       {/* 범례 */}
       {!searchFocused && (
-        <View style={styles.legend}>
+        <View style={[styles.legend, { bottom: insets.bottom + 90 }]}>
           <MapLegend />
         </View>
       )}
 
       {/* ── 검색 바 ── */}
-      <View style={styles.searchContainer}>
+      <View style={[styles.searchContainer, { top: insets.top + 10 }]}>
         <View style={[styles.searchBar, searchFocused && styles.searchBarFocused]}>
           <Ionicons name="search" size={18} color={Colors.textTertiary} style={styles.searchIcon} />
           <TextInput
@@ -262,19 +264,19 @@ export default function MapHome() {
         onClose={() => setShowGridModal(false)}
         region={selectedRegion}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
 // ── 스타일 ────────────────────────────────────────────────────────────────────
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  legend:    { position: 'absolute', bottom: 120, right: 16 },
+  legend:    { position: 'absolute', left: 16 },   // bottom은 inset으로 동적 적용
 
   // ── 검색 ──
   searchContainer: {
     position: 'absolute',
-    top: 12,
+    // top은 inset으로 동적 적용
     left: 16,
     right: 16,
     zIndex: 100,
