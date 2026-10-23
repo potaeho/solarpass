@@ -31,6 +31,15 @@ SolarPass는 태양광 발전 사업을 준비하는 사용자가 **전국 지�
 
 ---
 
+## 사전 신청 랜딩 페이지
+
+앱 출시 전 수요를 검증하는 프리토타입 랜딩 페이지가 [`landing/`](landing/) 폴더에 있습니다. `main`에 `landing/` 변경이 올라가면 GitHub Actions가 GitHub Pages로 자동 배포합니다.
+
+| 페이지 | URL |
+|--------|-----|
+| 사전 신청 | https://potaeho.github.io/solarpass/ |
+| 관리자 대시보드 | https://potaeho.github.io/solarpass/admin.html |
+
 ## 스크린샷
 
 > 추가 예정

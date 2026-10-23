@@ -156,9 +156,10 @@ tr:hover td { background: #F9FAFB; }
   <div class="gate-box">
     <h1>🌱 솔라패스 관리자</h1>
     <p>신청자 현황을 확인합니다</p>
-    <input class="gate-input" type="password" id="pw-input" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')checkPw()">
-    <button class="gate-btn" onclick="checkPw()">확인</button>
-    <div class="gate-error" id="pw-error">비밀번호가 올바르지 않습니다</div>
+    <input class="gate-input" type="email" id="email-input" placeholder="관리자 이메일" autocomplete="username" style="margin-bottom:8px;">
+    <input class="gate-input" type="password" id="pw-input" placeholder="비밀번호 입력" autocomplete="current-password" onkeydown="if(event.key==='Enter')signIn()">
+    <button class="gate-btn" id="login-btn" onclick="signIn()">로그인</button>
+    <div class="gate-error" id="pw-error">이메일 또는 비밀번호가 올바르지 않습니다</div>
   </div>
 </div>
 
@@ -199,6 +200,7 @@ tr:hover td { background: #F9FAFB; }
       <input class="search-input" type="text" id="search" placeholder="이름 · 이메일 · 전화번호 검색" oninput="renderTable()">
       <div style="display:flex;gap:8px;">
         <button class="btn-refresh" onclick="loadData()">↻ 새로고침</button>
+        <button class="btn-refresh" onclick="signOut()">로그아웃</button>
         <button class="btn-csv" onclick="exportCSV()">CSV 다운로드</button>
       </div>
     </div>
@@ -227,8 +229,7 @@ tr:hover td { background: #F9FAFB; }
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const ADMIN_PW = '[removed]';
-
+// 접근 제어는 Supabase Auth + RLS가 담당한다 (관리자 이메일만 signups 조회 가능).
 const { createClient } = supabase;
 const db = createClient(
   'https://iuvqwfthimenieqxalqj.supabase.co',
@@ -250,16 +251,39 @@ const INTEREST_CLASS = {
 
 let allData = [];
 
-function checkPw() {
-  const val = document.getElementById('pw-input').value;
-  if (val === ADMIN_PW) {
-    document.getElementById('gate').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    loadData();
-  } else {
-    document.getElementById('pw-error').style.display = 'block';
-  }
+function showDashboard() {
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  loadData();
 }
+
+async function signIn() {
+  const email = document.getElementById('email-input').value.trim();
+  const password = document.getElementById('pw-input').value;
+  const btn = document.getElementById('login-btn');
+  btn.disabled = true;
+  document.getElementById('pw-error').style.display = 'none';
+  const { error } = await db.auth.signInWithPassword({ email, password });
+  btn.disabled = false;
+  if (error) {
+    document.getElementById('pw-error').style.display = 'block';
+    return;
+  }
+  document.getElementById('pw-input').value = '';
+  showDashboard();
+}
+
+async function signOut() {
+  await db.auth.signOut();
+  allData = [];
+  document.getElementById('tbody').innerHTML = '';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('gate').style.display = '';
+}
+
+db.auth.getSession().then(({ data }) => {
+  if (data.session) showDashboard();
+});
 
 async function loadData() {
   document.getElementById('loading').style.display = 'block';

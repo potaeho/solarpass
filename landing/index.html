@@ -191,9 +191,9 @@ document.addEventListener('DOMContentLoaded', async function() {
           'sb_publishable_5rcMOgpB_BRrw-R3-6Jlkw_GcSeCL_5'
         );
         window.__db = db;
-        db.from('signups').select('*',{count:'exact',head:true}).then(function(r){
+        db.rpc('signup_count').then(function(r){
           var el = document.getElementById('counter');
-          if(el && r.count != null) el.textContent = r.count;
+          if(el && r.data != null) el.textContent = r.data;
         });
         window.__supabaseHandleSubmit = async function(e){
           if(e) e.preventDefault();
